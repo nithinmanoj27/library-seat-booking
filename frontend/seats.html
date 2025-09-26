@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library Seat Booking - Seats</title>
+  <style>
+    .seat {
+      display:inline-block; 
+      width:60px; 
+      height:60px; 
+      margin:5px; 
+      text-align:center; 
+      line-height:60px; 
+      cursor:pointer; 
+      color:white; 
+      font-weight:bold; 
+      border-radius:8px;
+    }
+    .free { background:green; }
+    .reserved { background:orange; }
+    .occupied { background:red; }
+  </style>
+</head>
+<body>
+  <h2>Seat Availability</h2>
+  <button onclick="loadSeats()">🔄 Refresh Seats</button>
+  <div id="seatGrid"></div>
+  <p id="msg"></p>
+
+  <script>
+    async function loadSeats() {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://127.0.0.1:5000/availability", {
+        headers: {"Authorization": "Bearer " + token}
+      });
+
+      const seats = await response.json();
+      let grid = "";
+
+      seats.forEach(seat => {
+        grid += `<div class="seat ${seat.status}" 
+                     onclick="handleSeat(${seat.id}, '${seat.status}')">
+                     ${seat.label}
+                 </div>`;
+      });
+
+      document.getElementById("seatGrid").innerHTML = grid;
+    }
+
+    async function handleSeat(seatId, status) {
+      const token = localStorage.getItem("token");
+
+      if (status === "free") {
+        // Step 1: Hold seat
+        const res = await fetch("http://127.0.0.1:5000/hold", {
+          method: "POST",
+          headers: {"Content-Type":"application/json", "Authorization":"Bearer " + token},
+          body: JSON.stringify({seat_id: seatId})
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem("booking_id", data.booking_id);
+          document.getElementById("msg").innerText = 
+            `✅ Seat ${seatId} held! Click again to confirm.`;
+        } else {
+          document.getElementById("msg").innerText = `⚠️ ${data.msg}`;
+        }
+      }
+
+      else if (status === "reserved") {
+        // Step 2: Confirm booking
+        const bookingId = localStorage.getItem("booking_id");
+        if (!bookingId) {
+          document.getElementById("msg").innerText = "⚠️ No booking found to confirm.";
+          return;
+        }
+
+        const res = await fetch("http://127.0.0.1:5000/confirm", {
+          method: "POST",
+          headers: {"Content-Type":"application/json", "Authorization":"Bearer " + token},
+          body: JSON.stringify({booking_id: bookingId})
+        });
+
+        const data = await res.json();
+        document.getElementById("msg").innerText = res.ok 
+          ? "✅ Booking confirmed!"
+          : `⚠️ ${data.msg}`;
+      }
+
+      else if (status === "occupied") {
+        // Step 3: Release seat
+        const res = await fetch("http://127.0.0.1:5000/release", {
+          method: "POST",
+          headers: {"Content-Type":"application/json", "Authorization":"Bearer " + token},
+          body: JSON.stringify({seat_id: seatId})
+        });
+
+        const data = await res.json();
+        document.getElementById("msg").innerText = res.ok 
+          ? "✅ Seat released!"
+          : `⚠️ ${data.msg}`;
+      }
+
+      loadSeats(); // Refresh UI
+    }
+
+    // Initial load
+    loadSeats();
+  </script>
+</body>
+</html>

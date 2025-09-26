@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library Seat Booking - Login</title>
+</head>
+<body>
+  <h2>Login</h2>
+  <form id="loginForm">
+    <label>ERP: <input type="text" id="erp" required></label><br>
+    <label>Password: <input type="password" id="password" required></label><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const erp = document.getElementById("erp").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/login", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({erp, password})
+        });
+
+        const data = await response.json();
+        console.log("Login response:", data); // 👈 Debug
+
+        if (response.ok) {
+          localStorage.setItem("token", data.access_token);
+          document.getElementById("msg").innerText = "✅ Login successful! Redirecting...";
+          setTimeout(() => {
+            window.location.href = "seats.html";
+          }, 1000); // wait 1s so you see the success message
+        } else {
+          document.getElementById("msg").innerText = "❌ " + data.msg;
+        }
+      } catch (err) {
+        console.error("Error during login:", err);
+        document.getElementById("msg").innerText = "⚠️ Could not connect to backend.";
+      }
+    });
+  </script>
+</body>
+</html>
