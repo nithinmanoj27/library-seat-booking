@@ -27,10 +27,11 @@ An ETL pipeline is included to extract, transform, and load booking data for rep
    cd library-seat-booking/backend
 
 ## Create and activate a virtual environment
+```bash
 - python -m venv venv
 - venv\Scripts\activate   # On Windows
 - source venv/bin/activate  # On Linux/Mac
-
+```
 ## Install dependencies
 - pip install -r requirements.txt
 
