@@ -52,6 +52,7 @@ python etl/etl_pipeline.py
 ```
 
 ## Project Structure
+```
 library-seat-booking/
 │
 ├── backend/              # Flask backend
