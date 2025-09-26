@@ -28,23 +28,26 @@ An ETL pipeline is included to extract, transform, and load booking data for rep
 
 ## Create and activate a virtual environment
 ```bash
-- python -m venv venv
-- venv\Scripts\activate   # On Windows
-- source venv/bin/activate  # On Linux/Mac
+python -m venv venv
+venv\Scripts\activate   # On Windows
+source venv/bin/activate  # On Linux/Mac
 ```
 ## Install dependencies
-- pip install -r requirements.txt
-
+```bash
+pip install -r requirements.txt
+```
 ## Start the backend server
-- python app.py
-
+```bash
+python app.py
+```
 ## Open the frontend
 - Navigate to frontend/login.html in a browser.
 - Login with ERP credentials.
 
 ## ETL Pipeline
 - Run the ETL pipeline to extract booking and seat data into a CSV file
-- cd library-seat-booking
+  ``` bash 
+  cd library-seat-booking
   python etl/etl_pipeline.py
 
 ## Project Structure
