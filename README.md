@@ -25,3 +25,43 @@ An ETL pipeline is included to extract, transform, and load booking data for rep
    ```bash
    git clone https://github.com/nithinmanoj27/library-seat-booking.git
    cd library-seat-booking/backend
+
+## Create and activate a virtual environment
+- python -m venv venv
+- venv\Scripts\activate   # On Windows
+- source venv/bin/activate  # On Linux/Mac
+
+## Install dependencies
+- pip install -r requirements.txt
+
+## Start the backend server
+- python app.py
+
+## Open the frontend
+- Navigate to frontend/login.html in a browser.
+- Login with ERP credentials.
+
+## ETL Pipeline
+- Run the ETL pipeline to extract booking and seat data into a CSV file
+- cd library-seat-booking
+  python etl/etl_pipeline.py
+
+## Project Structure
+library-seat-booking/
+│
+├── backend/              # Flask backend
+│   ├── app.py
+│   ├── routes.py
+│   ├── models.py
+│   ├── auth.py
+│   └── config.py
+│
+├── frontend/             # Frontend pages
+│   ├── login.html
+│   └── seats.html
+│
+├── etl/                  # ETL pipeline
+│   └── etl_pipeline.py
+│
+├── requirements.txt      # Python dependencies
+└── README.md             # Project documentation
