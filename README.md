@@ -22,10 +22,10 @@ An ETL pipeline is included to extract, transform, and load booking data for rep
 ## Installation and Setup
 
 1. Clone the repository
-   ```bash
-   git clone https://github.com/nithinmanoj27/library-seat-booking.git
-   cd library-seat-booking/backend
-
+```bash
+git clone https://github.com/nithinmanoj27/library-seat-booking.git
+cd library-seat-booking/backend
+```
 ## Create and activate a virtual environment
 ```bash
 python -m venv venv
@@ -46,9 +46,10 @@ python app.py
 
 ## ETL Pipeline
 - Run the ETL pipeline to extract booking and seat data into a CSV file
-  ``` bash 
-  cd library-seat-booking
-  python etl/etl_pipeline.py
+``` bash 
+cd library-seat-booking
+python etl/etl_pipeline.py
+```
 
 ## Project Structure
 library-seat-booking/
